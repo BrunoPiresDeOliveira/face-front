@@ -14,7 +14,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import FormControl from "@material-ui/core/FormControl";
-import { Text } from './style';
+import { Text, Div, Separator, Quantity } from './style';
 import { mask, unMask } from 'remask';
 
 
@@ -39,6 +39,9 @@ const useStyles = makeStyles((theme) => ({
   formControl: {
     width: 397,
   },
+  input: {
+    marginBottom: '12px',
+  }
 }));
 
 export default function OrderEdit({ location }) {
@@ -48,8 +51,7 @@ export default function OrderEdit({ location }) {
   const history = useHistory()
 
   const [deliveryDate, setDeliveryDate] = useState('')
-  const [orderItems, setOrderItems] = useState('')
-  const [customization, setCustomization] = useState('')
+  const [orderItems, setOrderItems] = useState([])
   const [status, setStatus] = useState('')
   const [formOfPayment, setFormOfPayment] = useState('')
   const [message, setMessage] = useState('')
@@ -59,6 +61,12 @@ export default function OrderEdit({ location }) {
 
     const maskedValue = mask(originalValue, ['99/99/9999'])
     setDeliveryDate(maskedValue)
+  }
+
+  const handleChangeInput = (index, event) => {
+    const values = [...orderItems]
+    values[index][event.target.name] = event.target.value
+    setOrderItems(values)
   }
 
   const handleChangeFormOfPayment = (event) => {
@@ -73,10 +81,8 @@ export default function OrderEdit({ location }) {
   useEffect(() => {
     async function handleOrder() {
       const response = await orderById({ orderId })
-      console.log(response)
       setDeliveryDate(response.data.deliveryDate)
       setOrderItems(response.data.orderItems)
-      setCustomization(response.data.customization)
       setStatus(response.data.status)
       setFormOfPayment(response.data.formOfPayment)
     }
@@ -84,11 +90,10 @@ export default function OrderEdit({ location }) {
   }, [orderId])
 
   async function handleEditOrder() {
-    console.log(deliveryDate.length)
     if(deliveryDate.length < 10) {
       setMessage("Data incompleta")
     } else {
-      await orderEdit({ deliveryDate, orderItems, customization, status, formOfPayment, orderId })
+      await orderEdit({ deliveryDate, orderItems, status, formOfPayment, orderId })
       history.push("/order")
     }
   }
@@ -116,27 +121,134 @@ export default function OrderEdit({ location }) {
                 value={deliveryDate}
               />
             </Grid>
-            <Grid item xs={12} sm={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                label="Roupas"
-                onChange={e => setOrderItems(e.target.value)}
-                value={orderItems}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                multiline
-                label="Customização"
-                onChange={e => setCustomization(e.target.value)}
-                value={customization}
-              />
-            </Grid>
+            { orderItems.map((orderItems, index) => (
+              <Grid item sm={12}>
+                <Grid item xs={12}>
+                  <TextField
+                    className={classes.input}
+                    variant="outlined"
+                    required
+                    fullWidth
+                    id="garment"
+                    label="Peça"
+                    name="garment"
+                    value={orderItems.garment}
+                    onChange={event => handleChangeInput(index, event)}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    className={classes.input}
+                    variant="outlined"
+                    required
+                    multiline
+                    fullWidth
+                    name="customization"
+                    label="Customização"
+                    type="customization"
+                    id="customization"
+                    value={orderItems.customization}
+                    onChange={event => handleChangeInput(index, event)}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    variant="outlined"
+                    required
+                    multiline
+                    fullWidth
+                    name="print"
+                    label="Estampa"
+                    type="print"
+                    id="print"
+                    value={orderItems.print}
+                    onChange={event => handleChangeInput(index, event)}
+                  />
+                </Grid>
+                <Quantity>Quantidade total de peças: {
+                  isNaN(parseInt(orderItems.pp) 
+                  + parseInt(orderItems.p) 
+                  + parseInt(orderItems.m) 
+                  + parseInt(orderItems.g) 
+                  + parseInt(orderItems.gg))
+                  ? "Preencha todos os tamanhos com números"
+                  : (parseInt(orderItems.pp) 
+                  + parseInt(orderItems.p) 
+                  + parseInt(orderItems.m) 
+                  + parseInt(orderItems.g) 
+                  + parseInt(orderItems.gg))
+
+                }</Quantity>
+                <Div>
+                  <Grid item xs={2}>
+                    <TextField
+                      variant="outlined"
+                      required
+                      fullWidth
+                      name="pp"
+                      label="PP"
+                      type="pp"
+                      id="pp"
+                      value={orderItems.pp}
+                      onChange={event => handleChangeInput(index, event)}
+                    />
+                  </Grid>
+                  <Grid item xs={2}>
+                    <TextField
+                      variant="outlined"
+                      required
+                      fullWidth
+                      name="p"
+                      label="P"
+                      type="p"
+                      id="p"
+                      value={orderItems.p}
+                      onChange={event => handleChangeInput(index, event)}
+                    />
+                  </Grid>
+                  <Grid item xs={2}>
+                    <TextField
+                      variant="outlined"
+                      required
+                      fullWidth
+                      name="m"
+                      label="M"
+                      type="m"
+                      id="m"
+                      value={orderItems.m}
+                      onChange={event => handleChangeInput(index, event)}
+                    />
+                  </Grid>
+                  <Grid item xs={2}>
+                    <TextField
+                      variant="outlined"
+                      required
+                      fullWidth
+                      name="g"
+                      label="G"
+                      type="g"
+                      id="g"
+                      value={orderItems.g}
+                      onChange={event => handleChangeInput(index, event)}
+                    />
+                  </Grid>
+                  <Grid item xs={2}>
+                    <TextField
+                      variant="outlined"
+                      required
+                      fullWidth
+                      name="gg"
+                      label="GG"
+                      type="gg"
+                      id="gg"
+                      value={orderItems.gg}
+                      onChange={event => handleChangeInput(index, event)}
+                    />
+                  </Grid>
+                </Div>
+                <Separator />
+              </Grid>
+            )) }
             <Grid item xs={12}>
               <FormControl variant="outlined" className={classes.formControl}>
                 <InputLabel id="demo-simple-select-outlined-label">Status</InputLabel>

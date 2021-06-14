@@ -8,10 +8,9 @@ import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { clientCreate } from '../../services/api'
+import { register } from '../../services/api'
 import { useHistory } from 'react-router';
 import { Text } from './style'
-import { mask, unMask } from 'remask';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -33,31 +32,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ClientCreate() {
+export default function SignUp() {
   const classes = useStyles();
   const history = useHistory()
 
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
-  const [cnpj, setCnpj] = useState('')
-  const [phone, setPhone] = useState()
-  const [message, setMessage] = useState(false)
+  const [password, setPassword] = useState('')
+  const [message, setMessage] = useState('')
 
-  const emailFormat = e => {
-    const originalValue = unMask(e.target.value)
-
-    const maskedValue = mask(originalValue, ['99.999.999/9999-99'])
-    setCnpj(maskedValue)
-  }
-
-  async function handleCreateClient() {
-    const response = await clientCreate({ name, email, cnpj, phone })
-    if(response.data.error === 'Client already exists.'){
-      setMessage("CNPJ já existente na base de dados.")
-    } else if (response.status === 400) {
-      setMessage("Campos incorretos.")
+  async function handleRegister() {
+    const reg = /^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/
+    if (reg.test(email) === true && password.length > 2 && name.length > 0) {
+      const response = await register({ name, email, password })
+      if(response.data.error === "User already exists.") {
+        setMessage('Email já cadastrado!')
+      } else {
+        history.push("/user")
+      }
     } else {
-      history.push("/client")
+      setMessage('Email, senha ou nome inválidos!')
     }
   }
 
@@ -69,7 +63,7 @@ export default function ClientCreate() {
           <PersonAddOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Criar cliente
+          Cadastrar-se
         </Typography>
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
@@ -86,12 +80,15 @@ export default function ClientCreate() {
                 onChange={e => setName(e.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={12}>
+            <Grid item xs={12}>
               <TextField
                 variant="outlined"
                 required
                 fullWidth
+                id="email"
                 label="Email"
+                name="email"
+                autoComplete="email"
                 onChange={e => setEmail(e.target.value)}
               />
             </Grid>
@@ -100,18 +97,12 @@ export default function ClientCreate() {
                 variant="outlined"
                 required
                 fullWidth
-                label="CNPJ"
-                value={cnpj}
-                onChange={emailFormat}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                label="Telefone"
-                onChange={e => setPhone(e.target.value)}
+                name="password"
+                label="Senha"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                onChange={e => setPassword(e.target.value)}
               />
             </Grid>
           </Grid>
@@ -121,10 +112,12 @@ export default function ClientCreate() {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={handleCreateClient}
+            onClick={handleRegister}
           >
-            Cadastrar cliente
+            Cadastrar
           </Button>
+          <Grid container justify="flex-end">
+          </Grid>
         </form>
       </div>
     </Container>

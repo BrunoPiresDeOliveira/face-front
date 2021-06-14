@@ -49,8 +49,7 @@ export default function Orders() {
   },)
 
   async function handleDelete({order}) {
-    console.log(order)
-    if(window.confirm(`Deseja realmente excluir o orçamento do cliente ${order.clientName}, que é um(a) ${order.orderItems} ?`)){
+    if(window.confirm(`Deseja realmente excluir o orçamento do cliente ${order.clientName}, que esta com status ${order.status} ?`)){
       await orderDelete({ orderId: order.orderId })
       handleData()
     }
@@ -84,7 +83,6 @@ export default function Orders() {
             <TableCell className={classes.header}>Ação</TableCell>
             <TableCell className={classes.header}>Data de Solicitação</TableCell>
             <TableCell className={classes.header}>Data de entrega</TableCell>
-            <TableCell className={classes.header}>Peça</TableCell>
             <TableCell className={classes.header}>Status</TableCell>
             <TableCell className={classes.header}>Forma de pagamento</TableCell>
             <TableCell className={classes.header}>Cliente</TableCell>
@@ -100,7 +98,6 @@ export default function Orders() {
               </TableCell>
               <TableCell className={classes.infos}>{item.orderCreationDate}</TableCell>
               <TableCell className={classes.infos}>{item.deliveryDate}</TableCell>
-              <TableCell className={classes.infos}>{item.orderItems}</TableCell>
               <TableCell className={classes.infos}>{item.status}</TableCell>
               <TableCell className={classes.infos}>{item.formOfPayment}</TableCell>
               <TableCell className={classes.infos}>{item.clientName}</TableCell>

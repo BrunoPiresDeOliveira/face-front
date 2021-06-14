@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { orderById } from '../../services/api'
 import { useHistory } from 'react-router';
+import { Div, Separator, Quantity } from './style';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -29,6 +30,9 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  input: {
+    marginBottom: '12px',
+  }
 }));
 
 export default function OrderEdit({ location }) {
@@ -38,21 +42,21 @@ export default function OrderEdit({ location }) {
   const history = useHistory()
 
   const [deliveryDate, setDeliveryDate] = useState('')
-  const [orderItems, setOrderItems] = useState('')
-  const [customization, setCustomization] = useState('')
+  const [orderItems, setOrderItems] = useState([])
   const [clientName, setClientName] = useState('')
   const [status, setStatus] = useState('')
   const [formOfPayment, setFormOfPayment] = useState('')
+  const [value, setValue] = useState('')
 
   useEffect(() => {
     async function handleOrder() {
       const response = await orderById({ orderId })
       setDeliveryDate(response.data.deliveryDate)
       setOrderItems(response.data.orderItems)
-      setCustomization(response.data.customization)
       setStatus(response.data.status)
       setFormOfPayment(response.data.formOfPayment)
       setClientName(response.data.clientName)
+      setValue(response.data.value)
     }
     handleOrder()
   }, [orderId])
@@ -93,25 +97,126 @@ export default function OrderEdit({ location }) {
                 value={deliveryDate}
               />
             </Grid>
-            <Grid item xs={12} sm={12}>
-              <TextField
-                variant="outlined"
-                disabled
-                fullWidth
-                label="Roupas"
-                value={orderItems}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                disabled
-                fullWidth
-                multiline
-                label="Customização"
-                value={customization}
-              />
-            </Grid>
+            { orderItems.map((orderItems) => (
+              <Grid item sm={12}>
+                <Grid item xs={12}>
+                  <TextField
+                    className={classes.input}
+                    variant="outlined"
+                    disabled
+                    fullWidth
+                    id="garment"
+                    label="Peça"
+                    name="garment"
+                    value={orderItems.garment}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    className={classes.input}
+                    variant="outlined"
+                    disabled
+                    multiline
+                    fullWidth
+                    name="customization"
+                    label="Customização"
+                    type="customization"
+                    id="customization"
+                    value={orderItems.customization}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    variant="outlined"
+                    disabled
+                    multiline
+                    fullWidth
+                    name="print"
+                    label="Estampa"
+                    type="print"
+                    id="print"
+                    value={orderItems.print}
+                  />
+                </Grid>
+                <Quantity>Quantidade total de peças: {
+                  isNaN(parseInt(orderItems.pp) 
+                  + parseInt(orderItems.p) 
+                  + parseInt(orderItems.m) 
+                  + parseInt(orderItems.g) 
+                  + parseInt(orderItems.gg))
+                  ? "Preencha todos os tamanhos com números"
+                  : (parseInt(orderItems.pp) 
+                  + parseInt(orderItems.p) 
+                  + parseInt(orderItems.m) 
+                  + parseInt(orderItems.g) 
+                  + parseInt(orderItems.gg))
+
+                }</Quantity>
+                <Div>
+                  <Grid item xs={2}>
+                    <TextField
+                      variant="outlined"
+                      disabled
+                      fullWidth
+                      name="pp"
+                      label="PP"
+                      type="pp"
+                      id="pp"
+                      value={orderItems.pp}
+                    />
+                  </Grid>
+                  <Grid item xs={2}>
+                    <TextField
+                      variant="outlined"
+                      disabled
+                      fullWidth
+                      name="p"
+                      label="P"
+                      type="p"
+                      id="p"
+                      value={orderItems.p}
+                    />
+                  </Grid>
+                  <Grid item xs={2}>
+                    <TextField
+                      variant="outlined"
+                      disabled
+                      fullWidth
+                      name="m"
+                      label="M"
+                      type="m"
+                      id="m"
+                      value={orderItems.m}
+                    />
+                  </Grid>
+                  <Grid item xs={2}>
+                    <TextField
+                      variant="outlined"
+                      disabled
+                      fullWidth
+                      name="g"
+                      label="G"
+                      type="g"
+                      id="g"
+                      value={orderItems.g}
+                    />
+                  </Grid>
+                  <Grid item xs={2}>
+                    <TextField
+                      variant="outlined"
+                      disabled
+                      fullWidth
+                      name="gg"
+                      label="GG"
+                      type="gg"
+                      id="gg"
+                      value={orderItems.gg}
+                    />
+                  </Grid>
+                </Div>
+                <Separator />
+              </Grid>
+            )) }
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
@@ -128,6 +233,15 @@ export default function OrderEdit({ location }) {
                 fullWidth
                 label="Forma de pagamento"
                 value={formOfPayment}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                disabled
+                fullWidth
+                value={value}
+                label="Valor do pedido"
               />
             </Grid>
           </Grid>

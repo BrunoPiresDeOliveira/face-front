@@ -33,10 +33,9 @@ export async function register({ name, email, password }) {
 }
 
 // ORÇAMENTO ============================================================================
-export async function orderCreate({ deliveryDate, orderItems, customization, formOfPayment, clientId }) {
+export async function orderCreate({ deliveryDate, orderItems, customization, formOfPayment, clientId, value }) {
   try {
-    const response = await api.post('/order', { deliveryDate, orderItems, customization, formOfPayment, clientId })
-    console.log(response.status)
+    const response = await api.post('/order', { deliveryDate, orderItems, customization, formOfPayment, clientId, value })
     return response
   } catch (error) {
     console.log(error)
@@ -59,6 +58,15 @@ export async function orderById({ orderId }) {
     return response
   } catch (error) {
     console.log(error)
+  }
+}
+
+export async function orderByIdStatus({ orderId }) {
+  try {
+    const response = await api.get(`/order/${orderId}/status`)
+    return response
+  } catch (error) {
+    return error.response
   }
 }
 
@@ -120,6 +128,52 @@ export async function clientEdit({ name, email, cnpj, phone, clientId }) {
 export async function clientDelete({ clientId }) {
   try {
     const response = await api.delete(`/client/${clientId}`)
+    return response
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+//CLIENTES ===============================================================================
+export async function user() {
+  try {
+    const response = await api.get('/user')
+    return response
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function userById({ userId }) {
+  try {
+    const response = await api.get(`/user/${userId}`)
+    return response
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function userCreate({ name, email, cnpj, phone }) {
+  try {
+    const response = await api.post('/user', { name, email, cnpj, phone })
+    return response
+  } catch (error) {
+    return error.response
+  }
+}
+
+export async function userEdit({ name, email, userId }) {
+  try {
+    const response = await api.put(`/user/${userId}`, { name, email })
+    return response
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function userDelete({ userId }) {
+  try {
+    const response = await api.delete(`/user/${userId}`)
     return response
   } catch (error) {
     console.log(error)

@@ -32,4 +32,5 @@ export const Text = styled.p`
   font-weight: bold;
   color: #F50057;
   font-size: 40px;
+  margin-right: 290px;
 `

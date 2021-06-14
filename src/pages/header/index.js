@@ -25,6 +25,10 @@ export default function Header() {
     history.push('/client')
   }
 
+  function handleUsers() {
+    history.push('/user')
+  }
+
   function handleLogouts() {
     Cookies.remove('token')
     history.push('/')
@@ -36,6 +40,7 @@ export default function Header() {
         <Pages>
           <Page onClick={handleBudgets}>Pedidos</Page>
           <Page onClick={handleClients}>Clientes</Page>
+          <Page onClick={handleUsers}>Usuários</Page>
         </Pages>
         <Text>Face a Face</Text>
         <Avatar className={classes.avatar}>
