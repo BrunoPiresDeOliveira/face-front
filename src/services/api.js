@@ -32,7 +32,7 @@ export async function register({ name, email, password }) {
   }
 }
 
-// ORÇAMENTO ============================================================================
+// PEDIDO ============================================================================
 export async function orderCreate({ deliveryDate, orderItems, customization, formOfPayment, clientId, value }) {
   try {
     const response = await api.post('/order', { deliveryDate, orderItems, customization, formOfPayment, clientId, value })

@@ -73,7 +73,7 @@ export default function OrderEdit({ location }) {
           <PageviewIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Orçamento
+          Pedido
         </Typography>
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
@@ -252,7 +252,7 @@ export default function OrderEdit({ location }) {
             className={classes.submit}
             onClick={handleEditOrder}
           >
-            Orçamentos
+            Pedidos
           </Button>
         </form>
       </div>

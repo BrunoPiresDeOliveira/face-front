@@ -315,7 +315,7 @@ export default function OrderCreate({ location }) {
             className={classes.submit}
             onClick={handleSubmit}
           >
-            Criar orçamento
+            Criar pedido
           </Button>
           <Grid container justify="flex-end">
           </Grid>
