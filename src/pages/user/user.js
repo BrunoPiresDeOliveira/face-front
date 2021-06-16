@@ -68,7 +68,7 @@ export default function User() {
   return (
     <React.Fragment>
       <Title>Usuários</Title>
-      <AddIcon className={classes.actions} onClick={() => handleCreate()}></AddIcon>
+      {owner && <AddIcon className={classes.actions} onClick={() => handleCreate()}></AddIcon>}
       <Table size="small">
         <TableHead>
           <TableRow>
