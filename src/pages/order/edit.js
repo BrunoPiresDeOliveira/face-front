@@ -262,7 +262,7 @@ export default function OrderEdit({ location }) {
                   <MenuItem value={status}>
                     <em>{status}</em>
                   </MenuItem>
-                    {status !== "Aguardando responsta" && <MenuItem value={"Aguardando responsta"}>Aguardando responsta</MenuItem>}
+                    {status !== "Aguardando resposta" && <MenuItem value={"Aguardando responsta"}>Aguardando resposta</MenuItem>}
                     {status !== "Respondido" && <MenuItem value={"Respondido"}>Respondido</MenuItem>}
                     {status !== "Enfestando tecido" && <MenuItem value={"Enfestando tecido"}>Enfestando tecido</MenuItem>}
                     {status !== "Cortando tecido" && <MenuItem value={"Cortando tecido"}>Cortando Tecido</MenuItem>}

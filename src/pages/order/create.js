@@ -204,18 +204,20 @@ export default function OrderCreate({ location }) {
                   />
                 </Grid>
                 <Quantity>Quantidade total de peças: {
-                  isNaN(parseInt(orderItems.pp) 
-                  + parseInt(orderItems.p) 
-                  + parseInt(orderItems.m) 
-                  + parseInt(orderItems.g) 
-                  + parseInt(orderItems.gg))
-                  ? "Preencha todos os tamanhos com números"
-                  : (parseInt(orderItems.pp) 
-                  + parseInt(orderItems.p) 
-                  + parseInt(orderItems.m) 
-                  + parseInt(orderItems.g) 
-                  + parseInt(orderItems.gg))
-
+                  isNaN(
+                    parseInt(orderItems.pp) 
+                    + parseInt(orderItems.p) 
+                    + parseInt(orderItems.m) 
+                    + parseInt(orderItems.g) 
+                    + parseInt(orderItems.gg))
+                    ? "Preencha todos os tamanhos com números"
+                    : (
+                      parseInt(orderItems.pp) 
+                    + parseInt(orderItems.p) 
+                    + parseInt(orderItems.m)
+                    + parseInt(orderItems.g) 
+                    + parseInt(orderItems.gg)
+                      )
                 }</Quantity>
                 <Div>
                   <Grid item xs={2}>
