@@ -78,7 +78,17 @@ export default function OrderEdit({ location }) {
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={12}>
-            <TextField
+              <TextField
+                variant="outlined"
+                disabled
+                fullWidth
+                autoFocus
+                label="Código do pedido"
+                value={orderId}
+              />
+            </Grid>
+            <Grid item xs={12} sm={12}>
+              <TextField
                 variant="outlined"
                 disabled
                 fullWidth
@@ -88,7 +98,7 @@ export default function OrderEdit({ location }) {
               />
             </Grid>
             <Grid item xs={12} sm={12}>
-            <TextField
+              <TextField
                 variant="outlined"
                 disabled
                 fullWidth
